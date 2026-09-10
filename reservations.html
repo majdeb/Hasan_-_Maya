@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>قائمة التأكيدات — الحسن و مايا</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#f6f1e7;
+    --cream-2:#efe7d6;
+    --sage:#3d4a3a;
+    --sage-2:#5c6b56;
+    --rose:#c1897a;
+    --gold:#ad8a4e;
+    --ink:#2c2a23;
+    --line: rgba(61,74,58,0.18);
+    --ok:#4c7a5a;
+    --no:#b5624f;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{ background:var(--cream); color:var(--ink); font-family:'Tajawal', sans-serif; font-weight:300; }
+  h1,h2{ font-family:'Amiri', serif; font-weight:700; }
+
+  header{ text-align:center; padding:4.5rem 1.5rem 2rem; }
+  header .eyebrow{ letter-spacing:0.06em; font-size:0.8rem; color:var(--sage-2); }
+  header h1{ font-size:clamp(2rem,5vw,3rem); color:var(--sage); margin-top:0.5rem; }
+  .divider{ width:44px; height:1px; background:var(--gold); margin:1.4rem auto; opacity:0.6; }
+  a.back{ display:inline-block; margin-top:0.5rem; font-size:0.85rem; color:var(--sage-2); text-decoration:underline; text-decoration-color:var(--line); }
+
+  main{ max-width:920px; margin:0 auto; padding:0 1.5rem 5rem; }
+
+  .stats{ display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin-bottom:2.5rem; }
+  @media(max-width:480px){ .stats{ grid-template-columns:1fr; } }
+  .stat{ background:var(--cream-2); border:1px solid var(--line); padding:1.4rem 1rem; text-align:center; }
+  .stat .n{ font-family:'Amiri',serif; font-size:2.1rem; color:var(--sage); display:block; }
+  .stat .l{ font-size:0.75rem; color:var(--sage-2); margin-top:0.3rem; }
+
+  .toolbar{ display:flex; gap:0.8rem; margin-bottom:1.2rem; flex-wrap:wrap; }
+  .toolbar input, .toolbar select{
+    border:1px solid var(--line); background:var(--cream); padding:0.6rem 0.9rem;
+    font-family:'Tajawal',sans-serif; font-size:0.9rem; color:var(--ink); outline:none;
+  }
+  .toolbar input{ flex:1; min-width:180px; }
+  .toolbar input:focus, .toolbar select:focus{ border-color:var(--rose); }
+
+  table{ width:100%; border-collapse:collapse; background:var(--cream-2); border:1px solid var(--line); }
+  .table-scroll{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  @media(max-width:640px){ table{ min-width:560px; } }
+  thead th{
+    text-align:right; font-size:0.75rem; letter-spacing:0.04em; color:var(--sage-2);
+    padding:0.9rem 1rem; border-bottom:1px solid var(--line);
+  }
+  tbody td{ padding:0.9rem 1rem; border-bottom:1px solid var(--line); font-size:0.92rem; }
+  tbody tr{ opacity:0; transform:translateY(10px); animation:rowIn 0.5s ease forwards; }
+  @keyframes rowIn{ to{ opacity:1; transform:translateY(0); } }
+  tbody tr:last-child td{ border-bottom:none; }
+  tbody tr:hover{ background:rgba(173,138,78,0.08); }
+
+  .badge{
+    display:inline-block; padding:0.25rem 0.75rem; border-radius:999px; font-size:0.75rem;
+  }
+  .badge.yes{ background:rgba(76,122,90,0.14); color:var(--ok); }
+  .badge.no{ background:rgba(181,98,79,0.14); color:var(--no); }
+
+  .empty{ text-align:center; padding:3rem 1rem; color:var(--sage-2); font-size:0.9rem; }
+
+  /* PASSWORD GATE */
+  #gate{
+    position:fixed; inset:0; background:var(--cream); z-index:200;
+    display:flex; align-items:center; justify-content:center; padding:1.5rem;
+  }
+  .gate-box{
+    max-width:340px; width:100%; text-align:center; border:1px solid var(--line);
+    background:var(--cream-2); padding:2.6rem 1.8rem;
+  }
+  .gate-box h2{ font-size:1.6rem; color:var(--sage); }
+  .gate-box p{ margin-top:0.5rem; font-size:0.85rem; color:var(--sage-2); }
+  .gate-box input{
+    width:100%; margin-top:1.4rem; border:none; border-bottom:1px solid var(--line); background:transparent;
+    padding:0.6rem 0.1rem; font-family:'Tajawal',sans-serif; font-size:1rem; text-align:center; outline:none;
+  }
+  .gate-box input:focus{ border-color:var(--rose); }
+  .gate-box button{
+    margin-top:1.4rem; padding:0.75rem 2.2rem; border:1px solid var(--sage); background:transparent;
+    color:var(--sage); font-family:'Tajawal',sans-serif; font-size:0.85rem; cursor:pointer; transition:all 0.3s ease;
+  }
+  .gate-box button:hover{ background:var(--sage); color:var(--cream); }
+  .gate-error{ margin-top:0.9rem; font-size:0.8rem; color:var(--no); min-height:1.2em; }
+
+  #protected-content{ display:none; }
+
+  .setup{
+    margin-top:3rem; border:1px dashed var(--line); padding:1.6rem; font-size:0.85rem;
+    color:var(--sage-2); line-height:2;
+  }
+  .setup b{ color:var(--sage); }
+  .setup code{ background:var(--cream); padding:0.1rem 0.4rem; border:1px solid var(--line); font-size:0.8rem; }
+
+  @media (prefers-reduced-motion: reduce){ tbody tr{ animation-duration:0.01ms !important; } }
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="gate-box">
+    <h2>هذه الصفحة محمية</h2>
+    <p>الرجاء إدخال كلمة المرور لعرض قائمة التأكيدات.</p>
+    <input id="gate-input" type="password" placeholder="كلمة المرور" autocomplete="off">
+    <div class="gate-error" id="gate-error"></div>
+    <button id="gate-submit">دخول</button>
+  </div>
+</div>
+
+<div id="protected-content">
+<header>
+  <div class="eyebrow">الحسن و مايا · ٨ أكتوبر ٢٠٢٦</div>
+  <h1>قائمة التأكيدات</h1>
+  <div class="divider"></div>
+  <a class="back" href="index.html">← العودة إلى الدعوة</a>
+</header>
+
+<main>
+  <div class="stats">
+    <div class="stat"><span class="n" id="stat-total">–</span><span class="l">إجمالي الردود</span></div>
+    <div class="stat"><span class="n" id="stat-yes">–</span><span class="l">تأكيد الحضور</span></div>
+    <div class="stat"><span class="n" id="stat-guests">–</span><span class="l">إجمالي الضيوف</span></div>
+  </div>
+
+  <div class="toolbar">
+    <input id="search" type="text" placeholder="ابحث عن اسم...">
+    <select id="filter">
+      <option value="all">الكل</option>
+      <option value="yes">تأكيد الحضور فقط</option>
+      <option value="no">الاعتذار فقط</option>
+    </select>
+  </div>
+
+  <div class="table-scroll">
+  <table>
+    <thead>
+      <tr>
+        <th>الاسم</th>
+        <th>الحالة</th>
+        <th>عدد الضيوف</th>
+        <th>ملاحظة</th>
+      </tr>
+    </thead>
+    <tbody id="rows"></tbody>
+  </table>
+  </div>
+  <div class="empty" id="empty" style="display:none;">لا توجد نتائج مطابقة.</div>
+
+  <div class="setup">
+    <b>هذه بيانات تجريبية.</b> لجعل هذه الصفحة تعرض التأكيدات الحقيقية مجانًا بالكامل، استخدم
+    Google Apps Script كخادم بسيط يكتب مباشرة داخل جدول Google Sheets:<br><br>
+    ١. أنشئ جدول Google Sheets واذهب إلى <code>Extensions → Apps Script</code>، والصق كود الخادم البسيط
+    الذي زوّدك به المطوّر، ثم انشره كـ <code>Web App</code> (الوصول: Anyone).<br>
+    ٢. انسخ رابط النشر (ينتهي بـ <code>/exec</code>).<br>
+    ٣. استبدل قيمة <code>APPS_SCRIPT_URL</code> في صفحة الدعوة (index.html) وفي هذا الملف بذلك الرابط —
+    ستتحول الصفحتان تلقائيًا للعمل ببيانات حقيقية بدلاً من التجريبية.
+  </div>
+</main>
+</div>
+
+<script>
+  // Change this to your own password before publishing.
+  const RESERVATIONS_PASSWORD = 'omar-layla-2026';
+
+  const gate = document.getElementById('gate');
+  const protectedContent = document.getElementById('protected-content');
+  const gateInput = document.getElementById('gate-input');
+  const gateError = document.getElementById('gate-error');
+
+  function tryUnlock(){
+    if(gateInput.value === RESERVATIONS_PASSWORD){
+      gate.style.display = 'none';
+      protectedContent.style.display = 'block';
+    } else {
+      gateError.textContent = 'كلمة المرور غير صحيحة، حاول مرة أخرى.';
+      gateInput.value = '';
+      gateInput.focus();
+    }
+  }
+  document.getElementById('gate-submit').addEventListener('click', tryUnlock);
+  gateInput.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') tryUnlock(); });
+  gateInput.focus();
+
+  // No demo data — the page waits for real data from APPS_SCRIPT_URL below.
+  const DEMO_DATA = [];
+
+  // To go live: set this to your Google Apps Script Web App URL (ends in /exec)
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzc6EgcI14M4UVqpLgpeKVJM5DGtsPl9N7304j88JPreEmAH3aU6kh0NK5-ni71SG9gkg/exec';
+
+  function normalizeRows(rawRows){
+    return rawRows.map(row=>{
+      const attendingRaw = String(row.attending || '').trim();
+      return {
+        name: row.name || '',
+        attending: /يسعدنا|نعم|yes|true/i.test(attendingRaw),
+        guests: parseInt(row.guests, 10) || 1,
+        note: row.note || ''
+      };
+    });
+  }
+
+  function render(data){
+    const rowsEl = document.getElementById('rows');
+    const emptyEl = document.getElementById('empty');
+    const q = document.getElementById('search').value.trim().toLowerCase();
+    const f = document.getElementById('filter').value;
+
+    let filtered = data.filter(d=>{
+      const matchesQ = d.name.toLowerCase().includes(q);
+      const matchesF = f === 'all' || (f === 'yes' && d.attending) || (f === 'no' && !d.attending);
+      return matchesQ && matchesF;
+    });
+
+    rowsEl.innerHTML = '';
+    filtered.forEach((d, i)=>{
+      const tr = document.createElement('tr');
+      tr.style.animationDelay = (i*0.05)+'s';
+      tr.innerHTML = `
+        <td>${d.name}</td>
+        <td><span class="badge ${d.attending?'yes':'no'}">${d.attending?'مؤكد الحضور':'اعتذر'}</span></td>
+        <td>${d.guests}</td>
+        <td>${d.note || '—'}</td>
+      `;
+      rowsEl.appendChild(tr);
+    });
+    emptyEl.style.display = filtered.length ? 'none' : 'block';
+
+    const total = data.length;
+    const yes = data.filter(d=>d.attending).length;
+    const guestSum = data.filter(d=>d.attending).reduce((a,d)=>a+d.guests,0);
+    document.getElementById('stat-total').textContent = total;
+    document.getElementById('stat-yes').textContent = yes;
+    document.getElementById('stat-guests').textContent = guestSum;
+  }
+
+  let currentData = DEMO_DATA;
+  document.getElementById('search').addEventListener('input', ()=>render(currentData));
+  document.getElementById('filter').addEventListener('change', ()=>render(currentData));
+
+  if(APPS_SCRIPT_URL){
+    fetch(APPS_SCRIPT_URL)
+      .then(r=>r.json())
+      .then(rawRows=>{ currentData = normalizeRows(rawRows); render(currentData); })
+      .catch(()=>{ render(currentData); });
+  } else {
+    render(currentData);
+  }
+</script>
+
+</body>
+</html>
