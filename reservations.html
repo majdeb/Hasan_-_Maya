@@ -187,18 +187,11 @@
   gateInput.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') tryUnlock(); });
   gateInput.focus();
 
-  // Demo data — replace by wiring up APPS_SCRIPT_URL below to your Google Apps Script deployment.
-  const DEMO_DATA = [
-    { name:'سارة الخالدي', attending:true, guests:2, note:'لا نطيق الانتظار!' },
-    { name:'يوسف حمدان', attending:true, guests:1, note:'' },
-    { name:'نور و طارق', attending:true, guests:2, note:'سنحضر الحفلين معًا' },
-    { name:'ريم عودة', attending:false, guests:1, note:'سنكون خارج البلاد للأسف' },
-    { name:'كريم منصور', attending:true, guests:3, note:'' },
-    { name:'هالة سعيد', attending:true, guests:1, note:'مبروك مقدمًا ♥' },
-  ];
+  // No demo data — the page waits for real data from APPS_SCRIPT_URL below.
+  const DEMO_DATA = [];
 
   // To go live: set this to your Google Apps Script Web App URL (ends in /exec)
-  const APPS_SCRIPT_URL = null; // e.g. 'https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec';
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzc6EgcI14M4UVqpLgpeKVJM5DGtsPl9N7304j88JPreEmAH3aU6kh0NK5-ni71SG9gkg/exec';
 
   function normalizeRows(rawRows){
     return rawRows.map(row=>{
